@@ -12,7 +12,7 @@ from ocs_ci.ocs.exceptions import TimeoutExpiredError
 from ocs_ci.ocs.ocp import OCP
 from ocs_ci.ocs.resources.ocs import OCS
 from ocs_ci.ocs import constants, exceptions, ocp
-from ocs_ci.utility.utils import TimeoutSampler
+from ocs_ci.utility.utils import TimeoutSampler, convert_device_size
 from ocs_ci.ocs import machine
 import tests.helpers
 from ocs_ci.ocs.resources import pod
@@ -639,3 +639,35 @@ def get_ocs_nodes(num_of_nodes=None):
     num_of_nodes = num_of_nodes or len(ocs_nodes)
 
     return ocs_nodes[:num_of_nodes]
+
+
+def check_nodes_specs(min_memory, min_cpu):
+    """
+    Check that the cluster worker nodes meet the required minimum CPU and memory
+
+    Args:
+        min_memory (int): The required minimum memory in bytes
+        min_cpu (int): The required minimum number of vCPUs
+
+    Returns:
+        bool: True if all nodes meet the required minimum specs, False otherwise
+
+    """
+    nodes = get_typed_nodes()
+    log.info(
+        f"Checking following nodes with worker selector (assuming that "
+        f"this is ran in CI and there are no worker nodes without OCS):\n"
+        f"{[node.get().get('metadata').get('name') for node in nodes]}"
+    )
+    for node in nodes:
+        real_cpu = int(node.get()['status']['capacity']['cpu'])
+        real_memory = convert_device_size(node.get()['status']['capacity']['memory'], 'B')
+        if real_cpu < min_cpu or real_memory < min_memory:
+            log.warning(
+                f"Node {node.get().get('metadata').get('name')} doesn't have "
+                f"minimum of required reasources for running the test:\n"
+                f"{min_cpu} CPU and {min_memory} Memory\nIt has:\n{real_cpu} "
+                f"CPU and {real_memory} Memory"
+            )
+            return False
+    return True

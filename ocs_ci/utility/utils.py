@@ -2057,23 +2057,47 @@ def convert_device_size(unformatted_size, units_to_covert_to):
         if units == 'Ti':
             return absolute_size
         elif units == 'Gi':
-            return absolute_size * 1024
+            return absolute_size / 1024
         elif units == 'Mi':
-            return absolute_size * 1024 * 1024
+            return absolute_size / 1024 / 1024
+        elif units == 'Ki':
+            return absolute_size / 1024 / 1024 / 1024
     elif units_to_covert_to == 'GB':
         if units == 'Ti':
-            return absolute_size / 1024
+            return absolute_size * 1024
         elif units == 'Gi':
             return absolute_size
         elif units == 'Mi':
-            return absolute_size * 1024
+            return absolute_size / 1024
+        elif units == 'Ki':
+            return absolute_size / 1024 / 1024
     elif units_to_covert_to == 'MB':
         if units == 'Ti':
-            return absolute_size / 1024 / 1024
+            return absolute_size * 1024 * 1024
         elif units == 'Gi':
-            return absolute_size / 1024
+            return absolute_size * 1024
         elif units == 'Mi':
             return absolute_size
+        elif units == 'Ki':
+            return absolute_size / 1024
+    elif units_to_covert_to == 'KB':
+        if units == 'Ti':
+            return absolute_size * 1024 * 1024 * 1024
+        elif units == 'Gi':
+            return absolute_size * 1024 * 1024
+        elif units == 'Mi':
+            return absolute_size * 1024
+        elif units == 'Ki':
+            return absolute_size
+    elif units_to_covert_to == 'B':
+        if units == 'Ti':
+            return absolute_size * 1024 * 1024 * 1024 * 1024
+        elif units == 'Gi':
+            return absolute_size * 1024 * 1024 * 1024
+        elif units == 'Mi':
+            return absolute_size * 1024 * 1024
+        elif units == 'Ki':
+            return absolute_size * 1024
 
 
 def mirror_image(image):
