@@ -666,8 +666,12 @@ def check_nodes_specs(min_memory, min_cpu):
             log.warning(
                 f"Node {node.get().get('metadata').get('name')} doesn't have "
                 f"minimum of required reasources for running the test:\n"
-                f"{min_cpu} CPU and {min_memory} Memory\nIt has:\n{real_cpu} "
+                f"{min_cpu} CPUs and {min_memory} Memory\nIt has:\n{real_cpu} "
                 f"CPU and {real_memory} Memory"
             )
             return False
+    log.info(
+        f"Cluster worker nodes meet the minimum requirements of "
+        f"{min_cpu} CPUs and {min_memory} Memory"
+    )
     return True
