@@ -49,6 +49,9 @@ setup(
         'numpy==1.18.5',
         'python-ipmi==0.4.2',
         'scipy==1.4.1',
+        'python-novaclient==17.1.0',
+        'python-cinderclient==7.1.0',
+        'keystoneauth1==4.2.0',
         'PrettyTable==0.7.2'
     ],
     entry_points={
