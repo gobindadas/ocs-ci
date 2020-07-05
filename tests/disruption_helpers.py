@@ -1,7 +1,7 @@
 import logging
 
 from ocs_ci.ocs.resources import pod
-from ocs_ci.ocs import constants, ocp, defaults
+from ocs_ci.ocs import constants, ocp
 from ocs_ci.framework import config
 from ocs_ci.utility.utils import TimeoutSampler, run_async, run_cmd
 from ocs_ci.utility.retry import retry
@@ -62,22 +62,6 @@ class Disruptions:
         if self.resource == 'operator':
             self.resource_obj = pod.get_operator_pods()
             self.selector = constants.OPERATOR_LABEL
-        if self.resource == 'noobaa_core':
-            self.resource_obj = pod.Pod(
-                **pod.get_pods_having_label(
-                    label=constants.NOOBAA_CORE_POD_LABEL,
-                    namespace=defaults.ROOK_CLUSTER_NAMESPACE
-                )[0]
-            )
-            self.selector = constants.NOOBAA_CORE_POD_LABEL
-        if self.resource == 'noobaa_db':
-            self.resource_obj = pod.Pod(
-                **pod.get_pods_having_label(
-                    label=constants.NOOBAA_DB_LABEL,
-                    namespace=defaults.ROOK_CLUSTER_NAMESPACE
-                )[0]
-            )
-            self.selector = constants.NOOBAA_DB_LABEL
 
         self.resource_count = resource_count or len(self.resource_obj)
 
