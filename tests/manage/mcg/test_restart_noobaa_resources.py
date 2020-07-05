@@ -31,7 +31,7 @@ class TestRestartNoobaaResources(ManageTest):
     Test Noobaa resources restart and check Noobaa health
 
     """
-    @pytest.fixture(scope='class', autouse=True)
+    @pytest.fixture(autouse=True)
     def setup(self):
         self.mcg_obj = MCG()
 
@@ -53,7 +53,7 @@ class TestRestartNoobaaResources(ManageTest):
 
         pod_obj.delete(force=True)
         assert pod_obj.ocp.wait_for_resource(
-            condition='Running', selector=self.selector,
+            condition='Running', selector=labels_map[resource_to_delete],
             resource_count=1, timeout=300
         )
 
