@@ -19,10 +19,10 @@ log = logging.getLogger(__name__)
     argnames=["resource_to_delete"],
     argvalues=[
         pytest.param(
-            *['noobaa_core'], marks=pytest.mark.polarion_id("OCS-XXX")
+            *['noobaa_core'], marks=pytest.mark.polarion_id("OCS-2232")
         ),
         pytest.param(
-            *['noobaa_db'], marks=pytest.mark.polarion_id("OCS-XXX")
+            *['noobaa_db'], marks=pytest.mark.polarion_id("OCS-2233")
         )
     ]
 )
