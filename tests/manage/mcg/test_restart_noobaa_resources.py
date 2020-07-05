@@ -5,8 +5,7 @@ from ocs_ci.framework.testlib import (
     ManageTest, tier4, tier4a, ignore_leftover_label
 )
 from ocs_ci.ocs.resources import pod
-from ocs_ci.ocs import constants, defaults, exceptions
-from ocs_ci.ocs.resources.mcg import MCG
+from ocs_ci.ocs import constants, defaults, cluster
 
 
 log = logging.getLogger(__name__)
@@ -31,10 +30,6 @@ class TestRestartNoobaaResources(ManageTest):
     Test Noobaa resources restart and check Noobaa health
 
     """
-    @pytest.fixture(autouse=True)
-    def setup(self):
-        self.mcg_obj = MCG()
-
     def test_restart_noobaa_resources(self, resource_to_delete):
         """
         Test Noobaa resources restart and check Noobaa health
@@ -53,10 +48,10 @@ class TestRestartNoobaaResources(ManageTest):
 
         pod_obj.delete(force=True)
         assert pod_obj.ocp.wait_for_resource(
-            condition='Running', selector=labels_map[resource_to_delete],
+            condition=constants.STATUS_RUNNING,
+            selector=labels_map[resource_to_delete],
             resource_count=1, timeout=300
         )
 
-        # check noobaa health
-        if not self.mcg_obj.status:
-            raise exceptions.NoobaaHealthException("Cluster health is NOT OK")
+        cl_obj = cluster.CephCluster()
+        cl_obj.wait_for_noobaa_health_ok()
