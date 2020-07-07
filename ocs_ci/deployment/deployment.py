@@ -752,7 +752,7 @@ def setup_local_storage():
     verify_pvs_created(len(worker_names))
 
 
-@retry(AssertionError, 12, 10, 1)
+@retry(AssertionError, 120, 10, 1)
 def verify_pvs_created(expected_pvs):
     """
     Verify that PVs were created and are in the Available state
